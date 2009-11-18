@@ -28,6 +28,7 @@ function! s:OpenBuffer(nr, mode)
 endfunction
 
 function! s:OpenFile(path, mode)
+  let cwd = getcwd()
   let nr = bufnr('^' . a:path . '$')
   if nr > -1
     call s:OpenBuffer(nr, a:mode)
@@ -39,6 +40,8 @@ function! s:OpenFile(path, mode)
           \   ':tabedit ',
           \ ][a:mode] . s:EscapeFilename(a:path)
   endif
+  " countermeasure for auto-cd script
+  execute ':lcd ' . cwd
 endfunction
 
 function! s:EscapeFilename(fn)
